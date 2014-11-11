@@ -65,7 +65,7 @@ img {
 	margin-left: 1em;
 	font-weight: bold;
 	position: absolute;
-	bottom: 2em;
+	bottom: 1em;
 }
 
 .date{
@@ -94,6 +94,13 @@ img {
 	width: inherit;
 	height: inherit;
 	position: relative;
+}
+
+.truncate {
+	width: 90%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 @media screen and (max-width: 690px) {
@@ -135,7 +142,7 @@ img {
 		font-size: 1em;
 		margin-left: 1em;
 		font-weight: bold;
-		top: 1em;
+		top: 0.5em;
 
 	}
 
@@ -157,4 +164,10 @@ img {
 		position: absolute;
 		z-index: 1000;
 		height: 100%;
+	}
+	.truncate {
+		width: 50%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
