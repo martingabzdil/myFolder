@@ -103,6 +103,60 @@ img {
 	text-overflow: ellipsis;
 }
 
+#prevbtn{
+	width: 5%;
+	height: inherit;
+	background-color: blue;
+	display: inline-block;
+	background-image: url("back.png");
+	background-repeat: no-repeat;
+	background-size: 70%;
+	background-position:center;
+
+}
+
+#pgbtn{
+position: relative;
+/* width: 35%; */
+/* height: 4em; */
+display: inline-block;
+background-color: rgb(103, 0, 255);
+/* top: 10px; */
+text-align: center;
+vertical-align: super;
+}
+
+#nextbtn{
+	width: 5%;
+	height: inherit;
+	background-color: yellow;
+	display: inline-block;
+	background-image: url("next.png");
+	background-repeat: no-repeat;
+	background-size: 70%;
+	background-position:center;
+
+}
+
+.navbar{
+	position: relative;
+	width: 100%;
+	height: 4em;
+	display: inline-block;
+	background-color: red;
+	top: 10px;
+	text-align: center;
+}
+
+.navitems{
+	width: 1em;
+	height: 3.5em;
+	background-color: black;
+	display: inline-block;
+
+
+}
+
 @media screen and (max-width: 690px) {
 	.video{
 		float: inherit;
