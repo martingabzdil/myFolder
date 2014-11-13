@@ -31,7 +31,7 @@ function fillInfo(subor){
 	}
 
 	
-	document.getElementById("testik").innerHTML=content;
+	document.getElementById("main-content").innerHTML=content;
 	console.log(content);
 }
 
