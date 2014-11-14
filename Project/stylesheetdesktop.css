@@ -95,7 +95,10 @@ img {
 	height: inherit;
 	position: relative;
 }
+.still{
+	height: 70%;
 
+}
 .truncate {
 	width: 90%;
 	white-space: nowrap;
@@ -124,6 +127,7 @@ img {
 	display: inline-block;
 	text-align: center;
 	vertical-align: top;
+	cursor: pointer; cursor: hand;
 }
 
 #nextbtn{
