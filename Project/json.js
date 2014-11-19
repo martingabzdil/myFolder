@@ -1,4 +1,5 @@
 var subor="";
+var globPage=0;
 
 function loadJSON(){
 	var xmlhttp = new XMLHttpRequest();
@@ -13,11 +14,38 @@ function loadJSON(){
 	xmlhttp.send();
 }
 
+function hideBtns(page){
+	
+
+
+	if (page===0){
+		var link = document.getElementById('prevbtn');
+		link.style.visibility = 'hidden'; 
+		
+	}
+	else {
+		var link = document.getElementById('prevbtn');
+		link.style.visibility = 'visible';
+		
+	}
+
+	if (page===(Math.floor(subor.length/10))){
+		var link = document.getElementById('nextbtn');
+		link.style.visibility = 'hidden'; 
+		}
+		else {
+		var link = document.getElementById('nextbtn');
+		link.style.visibility = 'visible';
+		}
+}		
+
 function fillInfo(subor,page){
 	page=page||0;
+	globPage=page;
 	var content="";
 	var noOfItems = 0*1;
-	
+	hideBtns(page);
+
 	if (page*10+10>subor.length){
 		noOfItems=subor.length;
 	} else {
@@ -54,54 +82,26 @@ function createNavBtns(subor){
 	document.getElementById("pgbtn").innerHTML=buttonBlock; 
 }
 
+
 function loadItems(btnId){
+	globPage=btnId;
 	fillInfo(subor,btnId);
+	hideBtns(btnId);
+}
+
+function next(){
+	loadItems(globPage+1);
+}
+function back(){
+	loadItems(globPage-1);
 }
 
 var convertTime = function(JSONtimestamp){
 	var d = new Date(JSONtimestamp*1);
-	var m = d.getMonth()+1;
+	var m = d.getMonth();
 	var mth="";
-	switch (m){
-		case 1:
-			mth="January"	
-			break;
-		case 2:
-			mth="February"	
-			break;
-		case 3:
-			mth="March"	
-			break;
-		case 4:
-			mth="April"	
-			break;
-		case 5:
-			mth="May"	
-			break;
-		case 6:
-			mth="June"	
-			break;
-		case 7:
-			mth="July"	
-			break;
-		case 8:
-			mth="August"	
-			break;
-		case 9:
-			mth="September"	
-			break;
-		case 10:
-			mth="October"	
-			break;
-		case 11:
-			mth="November"	
-			break;
-		case 12:
-			mth="December"	
-			break;
-	}
-	 
-
+	var months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+	mth = months[m];
 	var formattedDate = d.getDate() + "-" + mth + "-" + d.getFullYear();
 	var hours = (d.getHours() < 10) ? "0" + d.getHours() : d.getHours();
 	var minutes = (d.getMinutes() < 10) ? "0" + d.getMinutes() : d.getMinutes();
