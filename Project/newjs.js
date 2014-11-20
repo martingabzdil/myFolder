@@ -1,24 +1,20 @@
-var JSONf="";
+var JSONf= {};
 
 load('http://academy.tutoky.com/api/json.php', function(xhr)
 	// {}); 
 {
     // document.getElementById('main-content').innerHTML = xhr.responseText;
-    JSONf=xhr.responseText;
+    JSONf=JSON.parse(xhr.responseText);
     console.log(JSONf);
+    CreatePage();
 });
-
-
-// CreateContent("The Alien Guy","Tuesday 11-12-2014","1");
-// CreateContent("Student studying","Saturday 11-12-2014","6");
-
 
 function load(url, callback) {
 
 
 	if(typeof XMLHttpRequest !== 'undefined') xhr = new XMLHttpRequest();
-	else {
-		var versions = ["MSXML2.XmlHttp.5.0",
+    else {
+        var versions = ["MSXML2.XmlHttp.5.0",
 		"MSXML2.XmlHttp.4.0",
 		"MSXML2.XmlHttp.3.0",
 		"MSXML2.XmlHttp.2.0",
@@ -55,7 +51,7 @@ function load(url, callback) {
     }
 
     function CreateContent (extTitle,extTimestamp,extImageNo){
-    	
+    	var extImageNo=0|extImageNo;
     	var article = document.createElement("article");
     	article.className="video";
     	var newDiv = document.createElement("div");
@@ -91,7 +87,7 @@ function load(url, callback) {
     	var timestampData=document.createTextNode(extTimestamp);
     	timestamp.appendChild(timestampData);
     	textBlock.appendChild(timestamp);
-    	console.log(article);
+    	// console.log(article);
     	var content = document.getElementById("main-content");
     	content.appendChild(article);
     };
@@ -99,12 +95,50 @@ function load(url, callback) {
 
 
 function CreatePage(page){
-	var page = page||0;
+	var currPage=document.getElementById("main-content").innerHTML="";
+    var page = page||0;
+	var noOfItems = 0*1;
+    
+    if (page*10+10>JSONf.length){
+        noOfItems=JSONf.length;
+    } else {
+        noOfItems=(page*10)+10;
+    }
 
-	for (var i=(page*10);i<(page*10)+10;i++){
-		CreateContent(JSON[i].title,JSON[i].timestamp,JSON[i].image);
+    for (var i=(page*10);i<noOfItems;i++){
+		CreateContent(JSONf[i].title,convertTime(JSONf[i].timestamp),JSONf[i].image);
+        
 	}
+    if (page===0){
+        var link = document.getElementById('prevbtn');
+        link.style.visibility = 'hidden'; 
+        
+    }
+    else {
+        var link = document.getElementById('prevbtn');
+        link.style.visibility = 'visible';
+        
+    }
+
+    if (page===Math.floor(noOfItems/10)){
+        var link = document.getElementById('nextbtn');
+        link.style.visibility = 'hidden'; 
+        }
+        else {
+        var link = document.getElementById('nextbtn');
+        link.style.visibility = 'visible';
+        }
 }
 
-
-CreatePage(2);
+var convertTime = function(JSONtimestamp){
+    var d = new Date(JSONtimestamp*1);
+    var m = d.getMonth();
+    var mth="";
+    var months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+    mth = months[m];
+    var formattedDate = d.getDate() + "-" + mth + "-" + d.getFullYear();
+    var hours = (d.getHours() < 10) ? "0" + d.getHours() : d.getHours();
+    var minutes = (d.getMinutes() < 10) ? "0" + d.getMinutes() : d.getMinutes();
+    var formattedTime = hours + ":" + minutes;
+    return formattedDate +" "+formattedTime;
+}
