@@ -1,6 +1,8 @@
+function Pagination (url, id, pageSize){
+
 var JSONf= {};
 
-load('http://academy.tutoky.com/api/json.php', function(xhr)
+load(url, function(xhr)
 	// {}); 
 {
     // document.getElementById('main-content').innerHTML = xhr.responseText;
@@ -8,8 +10,6 @@ load('http://academy.tutoky.com/api/json.php', function(xhr)
     console.log(JSONf);
     CreatePage();
 });
-
-var pagin = new 
 
 function load(url, callback) {
 
@@ -90,7 +90,7 @@ function load(url, callback) {
     	timestamp.appendChild(timestampData);
     	textBlock.appendChild(timestamp);
     	// console.log(article);
-    	var content = document.getElementById("main-content");
+    	var content = document.getElementById(id);
     	content.appendChild(article);
     };
 
@@ -101,13 +101,13 @@ function CreatePage(page){
     var page = page||0;
 	var noOfItems = 0*1;
     
-    if (page*10+10>JSONf.length){
+    if (page*pageSize+pageSize>JSONf.length){
         noOfItems=JSONf.length;
     } else {
-        noOfItems=(page*10)+10;
+        noOfItems=(page*pageSize)+pageSize;
     }
 
-    for (var i=(page*10);i<noOfItems;i++){
+    for (var i=(page*pageSize);i<noOfItems;i++){
 		CreateContent(JSONf[i].title,convertTime(JSONf[i].timestamp),JSONf[i].image);
         
 	}
@@ -122,7 +122,7 @@ function CreatePage(page){
         
     }
 
-    if (page===Math.floor(noOfItems/10)){
+    if (page===Math.floor(noOfItems/pageSize)){
         var link = document.getElementById('nextbtn');
         link.style.visibility = 'hidden'; 
         }
@@ -146,22 +146,10 @@ var convertTime = function(JSONtimestamp){
 }
 
 
-function Pagination (url, id, pageSize){
-    load(url, function(xhr){
-    var JSONfile=JSON.parse(xhr.responseText);
-    document.getElementById(id)
 
-    var page = page||0;
-    var noOfItems = 0*1;
-    
-    if (page*10+10>JSONf.length){
-        noOfItems=JSONf.length;
-    } else {
-        noOfItems=(page*10)+10;
-    }
 
-    for (var i=(page*10);i<noOfItems;i++){
-        CreateContent(JSONf[i].title,convertTime(JSONf[i].timestamp),JSONf[i].image);
-    
-    });
+}
+
+pagination.prototype.render = function(){
+	
 }

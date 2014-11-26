@@ -58,7 +58,7 @@ img {
 	visibility: visible;
 }
 
-.titulok{
+.videoTitle{
 	font-family: arial;
 	color:#0889FD;
 	font-size: 1em;
@@ -232,7 +232,7 @@ img {
 		z-index: 500;
 	}
 
-	.titulok{
+	.videoTitle{
 		font-family: arial;
 		color:#0889FD;
 		font-size: 1em;
