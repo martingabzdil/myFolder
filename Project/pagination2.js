@@ -1,15 +1,13 @@
-var maxNoOfItems;
 function Pagination (url, idRender, pageSize,idButtons){
 	this.url=url;
 	this.idRender=idRender;
 	this.idButtons=idButtons;
-	this.pageSize=pageSize;
-	this.currentPage=0;
+	this.pageSize=pageSize*1;
+	this.currentPage=0*1;
 	this.noOfItems=0;
 	this.maxNoOfItems=0;
 	this.goNext = this.goNext.bind(this);
 	this.goBack = this.goBack.bind(this);
-	// this.renderArticles = this.renderArticles.bind(this);
 }
 
 Pagination.prototype.loadJSON = function(url,callback){ //load json file
@@ -53,24 +51,33 @@ if(typeof XMLHttpRequest !== 'undefined') xhr = new XMLHttpRequest();
     }
 
 Pagination.prototype.renderArticles=function (p){ //render pageSize of articles on page p
-	idRender=this.idRender;
-	pageSize=this.pageSize;
+	var idRender=this.idRender;
+	var pageSize=this.pageSize;
 	var page=p;
+	var noOfItems=0;
 	
-	function setMax(file){
-		return file.length;
+	convertTime = function(JSONtimestamp){
+    	var d = new Date(JSONtimestamp*1);
+    	var m = d.getMonth();
+    	var mth="";
+    	var months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+    	mth = months[m];
+    	var formattedDate = d.getDate() + "-" + mth + "-" + d.getFullYear();
+    	var hours = (d.getHours() < 10) ? "0" + d.getHours() : d.getHours();
+    	var minutes = (d.getMinutes() < 10) ? "0" + d.getMinutes() : d.getMinutes();
+    	var formattedTime = hours + ":" + minutes;
+    	return formattedDate +" "+formattedTime;
 	}
 
 	function render(JSONf,idR,pageS,p){
-		maxNoOfItems=JSONf.length;
+	
 		if (p*pageS+(pageSize*1)>JSONf.length){
-        this.noOfItems=JSONf.length;
+        noOfItems=JSONf.length;
    		} else {
-        this.noOfItems=(p*pageS)+(pageS*1);
+        noOfItems=(p*pageS)+(pageS*1);
     	}
 
-
-    	for (var i=(pageSize*p);i<this.noOfItems;i++){
+    	for (var i=(pageSize*p);i<noOfItems;i++){
 
 		var extImageNo=0|JSONf[i].image;
     	var article = document.createElement("article");
@@ -78,10 +85,21 @@ Pagination.prototype.renderArticles=function (p){ //render pageSize of articles 
     	var newDiv = document.createElement("div");
     	newDiv.className="overlay";
     	article.appendChild(newDiv);
-    	var mainTitle=document.createElement("h2");
-    	var mainTitleText=document.createTextNode("Check out this cool video!");
-    	mainTitle.appendChild(mainTitleText);
-    	newDiv.appendChild(mainTitle);
+
+    	if(JSONf[i].categories.length!==0){
+
+    		for(var k=0;k<JSONf[i].categories.length;k++){
+    			var tagContainer = document.createElement("div");
+    			tagContainer.className="tags";
+    			var mainTitle=document.createElement("p");
+    			var mainTitleText=document.createTextNode(JSONf[i].categories[k]);
+    			mainTitle.appendChild(mainTitleText);
+    			tagContainer.appendChild(mainTitle);
+    			newDiv.appendChild(tagContainer);
+    		}
+
+    	}
+
     	var videoStillPck = document.createElement("div");
     	videoStillPck.className="video-still-package";
     	article.appendChild(videoStillPck);
@@ -104,54 +122,70 @@ Pagination.prototype.renderArticles=function (p){ //render pageSize of articles 
     	var timestamp = document.createElement("time");
     	timestamp.className="date";
     	timestamp.id="timestamp";
-    	var timestampData=document.createTextNode(JSONf[i].timestamp);
+    	var timestampData=document.createTextNode(convertTime(JSONf[i].timestamp));
     	timestamp.appendChild(timestampData);
     	textBlock.appendChild(timestamp);
    
     	var content = document.getElementById(idRender);
     	content.appendChild(article);
 			
-		}
+		};
 
 	}
-	// console.log(this);
-	// console.log(this.maxNoOfItems);
-	
 
 	this.loadJSON(this.url,function (xhr){
 		var JSONfile=JSON.parse(xhr.responseText);
-		// console.log(this);
-		maxNoOfItems=JSONfile.length;
-		// console.log(this.maxNoOfItems);
-		render(JSONfile,idRender,pageSize,page);
-		
-
-	});
-	
-	// console.log(this.maxNoOfItems);
-	console.log(maxNoOfItems);
+		this.maxNoOfItems=JSONfile.length;
+ 		render(JSONfile,this.idRender,this.pageSize,page);
+		this.renderButtons();
+	}.bind(this));
 
 }
 
 Pagination.prototype.renderButtons=function (){
-	// console.log(maxNoOfItems);
-
+	
 	var prevBtn = document.createElement("div");
 	prevBtn.id="prevbtn";
 	var prevBtnTxt=document.createTextNode("PREVIOUS");
 	prevBtn.appendChild(prevBtnTxt);
 	var pageBtns = document.createElement("div");
 	pageBtns.id="pgbtn";
-	for (var i=0;i<8;i++){
-		// for (var i=0;i<Math.floor(this.maxNoOfItems/pageSize);i++){
-		// console.log("tried to create somee buttons");
-		//add inbound buttons
+	
+	console.log(this.maxNoOfItems%this.pageSize);
+	
+	var evenVsOddPages=0*1;
+	
+	if(this.maxNoOfItems%this.pageSize===0){
+		evenVsOddPages=0;
+		console.log(evenVsOddPages);
+	} else 
+		{
+		evenVsOddPages=1;
+		console.log(evenVsOddPages);
+		}
+
+	for (var i=0;i<Math.floor(this.maxNoOfItems/this.pageSize)+evenVsOddPages;i++){
 		var buttonBlock=document.createElement("div");
-		buttonBlock.className="navitems";
+		
 		var buttonNum=document.createTextNode(i+1);
 		buttonBlock.appendChild(buttonNum);
+		buttonBlock.setAttribute('data-id', i);
+		if (this.currentPage===i){
+			buttonBlock.className="navitems";
+
+		} else{
+			buttonBlock.className="navitemsInactive";
+		}
+
 		pageBtns.appendChild(buttonBlock);
 	}
+	pageBtns.addEventListener("click", function(e){
+		var target = e.target;
+		var btnId=target.getAttribute("data-id");
+		document.getElementById("main-content").innerHTML="";
+		this.currentPage=btnId*1;
+		this.renderArticles(btnId);
+	}.bind(this));
 
 	var nextBtn = document.createElement("div");
 	nextBtn.id="nextbtn";
@@ -162,6 +196,7 @@ Pagination.prototype.renderButtons=function (){
 	prevBtn.addEventListener("click",this.goBack);
 
 	var navigationBar=document.getElementsByTagName(this.idButtons)[0];
+	navigationBar.innerHTML="";
 	navigationBar.appendChild(prevBtn);
 	navigationBar.appendChild(pageBtns);
 	navigationBar.appendChild(nextBtn);
@@ -170,14 +205,14 @@ Pagination.prototype.renderButtons=function (){
 
 Pagination.prototype.goNext=function(){
 
-	if(maxNoOfItems%pageSize===0){
+	if(this.maxNoOfItems%this.pageSize===0){
 
-		if (this.currentPage<(Math.floor(maxNoOfItems/pageSize))-1){
+		if (this.currentPage<(Math.floor(this.maxNoOfItems/this.pageSize))-1){
 			document.getElementById("main-content").innerHTML="";
 			this.renderArticles(this.currentPage+=1);
 		}
 	}else {
-		if (this.currentPage<(Math.floor(maxNoOfItems/pageSize))){
+		if (this.currentPage<(Math.floor(this.maxNoOfItems/this.pageSize))){
 			document.getElementById("main-content").innerHTML="";
 			this.renderArticles(this.currentPage+=1);
 		}
@@ -195,9 +230,8 @@ Pagination.prototype.goBack=function(){
 }	
 
 
-var MyPag = new Pagination('http://academy.tutoky.com/api/json.php','main-content','15','nav');
-MyPag.renderArticles(0);
-MyPag.renderButtons();
 
-// document.getElementById("nextbtn").addEventListener("click",this.goNext);
-// document.getElementById("prevbtn").addEventListener("click",MyPag.goBack);
+
+var MyPag = new Pagination('http://academy.tutoky.com/api/json.php','main-content','10','nav');
+
+MyPag.renderArticles(0);
