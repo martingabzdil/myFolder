@@ -8,6 +8,7 @@ function Pagination (url, idRender, pageSize,idButtons){
 	this.maxNoOfItems=0;
 	this.goNext = this.goNext.bind(this);
 	this.goBack = this.goBack.bind(this);
+
 }
 
 Pagination.prototype.loadJSON = function(url,callback){ //load json file
@@ -151,26 +152,74 @@ Pagination.prototype.renderButtons=function (){
 	var pageBtns = document.createElement("div");
 	pageBtns.id="pgbtn";
 	
-	console.log(this.maxNoOfItems%this.pageSize);
-	
 	var evenVsOddPages=0*1;
 	
 	if(this.maxNoOfItems%this.pageSize===0){
 		evenVsOddPages=0;
-		console.log(evenVsOddPages);
+		// console.log(evenVsOddPages);
 	} else 
 		{
 		evenVsOddPages=1;
-		console.log(evenVsOddPages);
+		// console.log(evenVsOddPages);
 		}
 
-	for (var i=0;i<Math.floor(this.maxNoOfItems/this.pageSize)+evenVsOddPages;i++){
+	var maxPg=Math.floor(this.maxNoOfItems/this.pageSize)+evenVsOddPages;
+	
+	if(this.currentPage<2){
+		for(var j=0;j<3;j++){
+		createPageButton(j,this.currentPage);
+		}
+		//three dots here
+		createThreeDots();
+		createPageButton(maxPg-1,this.currentPage);
+	}
+	if(this.currentPage===2){
+		for(var j=0;j<4;j++){
+		createPageButton(j,this.currentPage);
+		}
+		//three dots here
+		createThreeDots();
+		createPageButton(maxPg-1,this.currentPage);
+	}
+	if((this.currentPage+1)<maxPg-1 && (this.currentPage-1)>=2){
+		createPageButton(0,this.currentPage);
+		//three dots here
+		createThreeDots();
+		for (var k =this.currentPage-1;k<this.currentPage+2;k++){
+			createPageButton(k,this.currentPage);
+		}
+		//three dots here
+		createThreeDots();
+		createPageButton(maxPg-1,this.currentPage);	
+	}
+	if (this.currentPage===maxPg-2){
+		createPageButton(0,this.currentPage);
+		//three dots here
+		createThreeDots();
+		for (var k =this.currentPage-1;k<this.currentPage+2;k++){
+			createPageButton(k,this.currentPage);
+		}
+	}
+	if(this.currentPage===maxPg-1 || this.currentPage===maxPg){
+		createPageButton(0,this.currentPage);
+		//three dots here
+		createThreeDots();
+		createPageButton(maxPg-2,this.currentPage);
+		createPageButton(maxPg-1,this.currentPage);
+	}
+
+	function createPageButton(i,curPg){
+
 		var buttonBlock=document.createElement("div");
 		
 		var buttonNum=document.createTextNode(i+1);
 		buttonBlock.appendChild(buttonNum);
 		buttonBlock.setAttribute('data-id', i);
-		if (this.currentPage===i){
+	
+		console.log(i);
+		console.log(curPg); //undefined
+	
+		if (i===curPg){
 			buttonBlock.className="navitems";
 
 		} else{
@@ -178,7 +227,16 @@ Pagination.prototype.renderButtons=function (){
 		}
 
 		pageBtns.appendChild(buttonBlock);
+	
+	};
+
+	function createThreeDots(){
+		// var buttonBlock=document.createElement("div");
+		var textBlock=document.createTextNode("...");
+		// buttonBlock.appendChild(textBlock);
+		pageBtns.appendChild(textBlock);
 	}
+
 	pageBtns.addEventListener("click", function(e){
 		var target = e.target;
 		var btnId=target.getAttribute("data-id");

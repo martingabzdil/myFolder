@@ -143,6 +143,7 @@ img {
 	vertical-align: top;
 	cursor: pointer; cursor: hand;
 	font-weight: 600;
+	min-width: 20%;
 }
 
 #nextbtn{
