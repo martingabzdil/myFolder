@@ -1,20 +1,32 @@
-function Pagination (url, idRender, pageSize,idButtons){
+//PAGINATION
+
+function Pagination (url ,idButtons, pageSize){
 	this.url=url;
-	this.idRender=idRender;
 	this.idButtons=idButtons;
-	this.pageSize=pageSize*1;
-	this.currentPage=0*1;
-	this.noOfItems=0;
+	this.pageSize=parseInt(pageSize,10);
+	this.currentPage=parseInt("0",10);
 	this.maxNoOfItems=0;
 	this.goNext = this.goNext.bind(this);
 	this.goBack = this.goBack.bind(this);
+	this.loadMore = this.loadMore.bind(this);
+	this.renderButtons=this.renderButtons.bind(this);
+	Pagination.instances.push(this);
 
 }
 
+Pagination.prototype.destroy = function () {
+    var i = 0;
+    while (Pagination.instances[i] !== this) { i++; }
+    Pagination.instances.splice(i, 1);
+};
+
+Pagination.instances = [];
+
+
 Pagination.prototype.loadJSON = function(url,callback){ //load json file
-if(typeof XMLHttpRequest !== 'undefined') xhr = new XMLHttpRequest();
-    else {
-        var versions = ["MSXML2.XmlHttp.5.0",
+	if(typeof XMLHttpRequest !== 'undefined') xhr = new XMLHttpRequest();
+	else {
+		var versions = ["MSXML2.XmlHttp.5.0",
 		"MSXML2.XmlHttp.4.0",
 		"MSXML2.XmlHttp.3.0",
 		"MSXML2.XmlHttp.2.0",
@@ -26,7 +38,7 @@ if(typeof XMLHttpRequest !== 'undefined') xhr = new XMLHttpRequest();
 				break;
 			}
 			catch(e){}
-             } // end for
+             }
          }
          
          xhr.onreadystatechange = ensureReadiness;
@@ -51,150 +63,52 @@ if(typeof XMLHttpRequest !== 'undefined') xhr = new XMLHttpRequest();
 
     }
 
-Pagination.prototype.renderArticles=function (p){ //render pageSize of articles on page p
-	var idRender=this.idRender;
-	var pageSize=this.pageSize;
-	var page=p;
-	var noOfItems=0;
-	
-	convertTime = function(JSONtimestamp){
-    	var d = new Date(JSONtimestamp*1);
-    	var m = d.getMonth();
-    	var mth="";
-    	var months=["January","February","March","April","May","June","July","August","September","October","November","December"];
-    	mth = months[m];
-    	var formattedDate = d.getDate() + "-" + mth + "-" + d.getFullYear();
-    	var hours = (d.getHours() < 10) ? "0" + d.getHours() : d.getHours();
-    	var minutes = (d.getMinutes() < 10) ? "0" + d.getMinutes() : d.getMinutes();
-    	var formattedTime = hours + ":" + minutes;
-    	return formattedDate +" "+formattedTime;
-	}
-
-	function render(JSONf,idR,pageS,p){
-	
-		if (p*pageS+(pageSize*1)>JSONf.length){
-        noOfItems=JSONf.length;
-   		} else {
-        noOfItems=(p*pageS)+(pageS*1);
-    	}
-
-    	for (var i=(pageSize*p);i<noOfItems;i++){
-
-		var extImageNo=0|JSONf[i].image;
-    	var article = document.createElement("article");
-    	article.className="video";
-    	var newDiv = document.createElement("div");
-    	newDiv.className="overlay";
-    	article.appendChild(newDiv);
-
-    	if(JSONf[i].categories.length!==0){
-
-    		for(var k=0;k<JSONf[i].categories.length;k++){
-    			var tagContainer = document.createElement("div");
-    			tagContainer.className="tags";
-    			var mainTitle=document.createElement("p");
-    			var mainTitleText=document.createTextNode(JSONf[i].categories[k]);
-    			mainTitle.appendChild(mainTitleText);
-    			tagContainer.appendChild(mainTitle);
-    			newDiv.appendChild(tagContainer);
-    		}
-
-    	}
-
-    	var videoStillPck = document.createElement("div");
-    	videoStillPck.className="video-still-package";
-    	article.appendChild(videoStillPck);
-    	var image=document.createElement("img");
-    	image.className="still";
-    	image.alt="";
-    	image.src="_img/"+extImageNo+".jpg";
-    	videoStillPck.appendChild(image);
-    	var playBtn=document.createElement("div");
-    	playBtn.className="play-button";
-    	videoStillPck.appendChild(playBtn);
-    	var textBlock=document.createElement("section");
-    	textBlock.className="textblock";
-    	article.appendChild(textBlock);
-    	var title=document.createElement("h2");
-    	var titleText=document.createTextNode(JSONf[i].title);
-    	title.className="videoTitle truncate";
-    	title.appendChild(titleText);
-    	textBlock.appendChild(title);
-    	var timestamp = document.createElement("time");
-    	timestamp.className="date";
-    	timestamp.id="timestamp";
-    	var timestampData=document.createTextNode(convertTime(JSONf[i].timestamp));
-    	timestamp.appendChild(timestampData);
-    	textBlock.appendChild(timestamp);
-   
-    	var content = document.getElementById(idRender);
-    	content.appendChild(article);
-			
-		};
-
-	}
-
-	this.loadJSON(this.url,function (xhr){
-		var JSONfile=JSON.parse(xhr.responseText);
-		this.maxNoOfItems=JSONfile.length;
- 		render(JSONfile,this.idRender,this.pageSize,page);
-		this.renderButtons();
-	}.bind(this));
-
-}
-
 Pagination.prototype.renderButtons=function (){
-	
+	var maxNoOfItems=parseInt("75",10);
+	// console.log(App.instances[0].maxNoOfItems);
 	var prevBtn = document.createElement("div");
 	prevBtn.id="prevbtn";
-	var prevBtnTxt=document.createTextNode("PREVIOUS");
+	var prevBtnTxt=document.createTextNode("◄ PREVIOUS");
 	prevBtn.appendChild(prevBtnTxt);
 	var pageBtns = document.createElement("div");
 	pageBtns.id="pgbtn";
 	
-	var evenVsOddPages=0*1;
+	var evenVsOddPages=parseInt("0",10);
 	
-	if(this.maxNoOfItems%this.pageSize===0){
+	if(maxNoOfItems%this.pageSize===0){
 		evenVsOddPages=0;
-		// console.log(evenVsOddPages);
 	} else 
-		{
+	{
 		evenVsOddPages=1;
-		// console.log(evenVsOddPages);
-		}
+	}
 
-	var maxPg=Math.floor(this.maxNoOfItems/this.pageSize)+evenVsOddPages;
+	var maxPg=Math.floor(maxNoOfItems/this.pageSize)+evenVsOddPages;
 	
 	if(this.currentPage<2){
 		for(var j=0;j<3;j++){
-		createPageButton(j,this.currentPage);
+			createPageButton(j,this.currentPage);
 		}
-		//three dots here
 		createThreeDots();
 		createPageButton(maxPg-1,this.currentPage);
 	}
 	if(this.currentPage===2){
 		for(var j=0;j<4;j++){
-		createPageButton(j,this.currentPage);
+			createPageButton(j,this.currentPage);
 		}
-		//three dots here
 		createThreeDots();
 		createPageButton(maxPg-1,this.currentPage);
 	}
 	if((this.currentPage+1)<maxPg-1 && (this.currentPage-1)>=2){
 		createPageButton(0,this.currentPage);
-		//three dots here
 		createThreeDots();
 		for (var k =this.currentPage-1;k<this.currentPage+2;k++){
 			createPageButton(k,this.currentPage);
 		}
-		//three dots here
 		createThreeDots();
 		createPageButton(maxPg-1,this.currentPage);	
 	}
 	if (this.currentPage===maxPg-2){
 		createPageButton(0,this.currentPage);
-		//three dots here
 		createThreeDots();
 		for (var k =this.currentPage-1;k<this.currentPage+2;k++){
 			createPageButton(k,this.currentPage);
@@ -202,7 +116,6 @@ Pagination.prototype.renderButtons=function (){
 	}
 	if(this.currentPage===maxPg-1 || this.currentPage===maxPg){
 		createPageButton(0,this.currentPage);
-		//three dots here
 		createThreeDots();
 		createPageButton(maxPg-2,this.currentPage);
 		createPageButton(maxPg-1,this.currentPage);
@@ -215,10 +128,7 @@ Pagination.prototype.renderButtons=function (){
 		var buttonNum=document.createTextNode(i+1);
 		buttonBlock.appendChild(buttonNum);
 		buttonBlock.setAttribute('data-id', i);
-	
-		console.log(i);
-		console.log(curPg); //undefined
-	
+
 		if (i===curPg){
 			buttonBlock.className="navitems";
 
@@ -227,13 +137,11 @@ Pagination.prototype.renderButtons=function (){
 		}
 
 		pageBtns.appendChild(buttonBlock);
-	
+
 	};
 
 	function createThreeDots(){
-		// var buttonBlock=document.createElement("div");
 		var textBlock=document.createTextNode("...");
-		// buttonBlock.appendChild(textBlock);
 		pageBtns.appendChild(textBlock);
 	}
 
@@ -241,15 +149,22 @@ Pagination.prototype.renderButtons=function (){
 		var target = e.target;
 		var btnId=target.getAttribute("data-id");
 		document.getElementById("main-content").innerHTML="";
-		this.currentPage=btnId*1;
-		this.renderArticles(btnId);
+		this.currentPage=parseInt(btnId,10);
+		
+		App.instances[0].renderArticles(btnId);
 	}.bind(this));
 
 	var nextBtn = document.createElement("div");
 	nextBtn.id="nextbtn";
-	var nextBtnTxt=document.createTextNode("NEXT");
+	var nextBtnTxt=document.createTextNode("NEXT ►");
 	nextBtn.appendChild(nextBtnTxt);
+
+	var loadMoreBtn = document.createElement("div");
+	loadMoreBtn.id="loadMoreBtn";
+	var lmBtnTxt=document.createTextNode("LOAD MORE");
+	loadMoreBtn.appendChild(lmBtnTxt);
 	
+	loadMoreBtn.addEventListener("click",this.loadMore); //event listeners
 	nextBtn.addEventListener("click",this.goNext);
 	prevBtn.addEventListener("click",this.goBack);
 
@@ -258,6 +173,9 @@ Pagination.prototype.renderButtons=function (){
 	navigationBar.appendChild(prevBtn);
 	navigationBar.appendChild(pageBtns);
 	navigationBar.appendChild(nextBtn);
+	navigationBar.appendChild(loadMoreBtn);
+
+
 
 }
 
@@ -267,29 +185,25 @@ Pagination.prototype.goNext=function(){
 
 		if (this.currentPage<(Math.floor(this.maxNoOfItems/this.pageSize))-1){
 			document.getElementById("main-content").innerHTML="";
-			this.renderArticles(this.currentPage+=1);
+			App.instances[0].renderArticles(this.currentPage+=1);
 		}
 	}else {
 		if (this.currentPage<(Math.floor(this.maxNoOfItems/this.pageSize))){
 			document.getElementById("main-content").innerHTML="";
-			this.renderArticles(this.currentPage+=1);
+			App.instances[0].renderArticles(this.currentPage+=1);
 		}
 	}
-		
+
 }
 
 Pagination.prototype.goBack=function(){
 	
 	if (this.currentPage!==0){
 		document.getElementById("main-content").innerHTML="";
-		this.renderArticles(this.currentPage-=1);
+		App.instances[0].renderArticles(this.currentPage-=1);
 	}
-	
 }	
 
-
-
-
-var MyPag = new Pagination('http://academy.tutoky.com/api/json.php','main-content','10','nav');
-
-MyPag.renderArticles(0);
+Pagination.prototype.loadMore=function(){
+	App.instances[0].renderArticles(this.currentPage+=1);
+}

@@ -51,7 +51,7 @@ img {
 	height: 17em;
 	background-color: white;
 	border: 1px solid rgba(0, 0, 0, 0.3);
-	margin-top: 20px;
+	margin-top: 10px;
 	margin-left: 7px;
 	position: relative;
 }
@@ -109,9 +109,9 @@ img {
 }
 
 #prevbtn{
-	width: 100px;
+	width: 123px;
 	height: inherit;
-	text-indent: 12px;
+/*	text-indent: 12px;*/
 	display: inline-block;
 	color: white;
 	background-color: #005eb5;
@@ -127,6 +127,7 @@ img {
 	line-height: 2.5em;
 	cursor: pointer;
 	margin-right: 10%;
+	visibility: visible;
 
 
 }
@@ -134,7 +135,6 @@ img {
 #prevbtn:hover{
 	opacity: 1;
 }
-
 
 #pgbtn{
 	position: relative;
@@ -144,11 +144,13 @@ img {
 	cursor: pointer; cursor: hand;
 	font-weight: 600;
 	min-width: 20%;
+	visibility: visible;
 }
 
 #nextbtn{
-	width: 100px;
+	width: 123px;
 	height: inherit;
+	text-indent: 30px;
 	display: inline-block;
 	color: white;
 	background-color: #005eb5;
@@ -163,14 +165,18 @@ img {
 	font-family: arial;
 	line-height: 2.5em;
 	text-align: left;
-	text-indent: 10px;
 	cursor: pointer;
 	margin-left: 10%;
+	visibility: visible;
 
 }
 
 #nextbtn:hover{
 	opacity: 1;
+}
+
+#loadMoreBtn{
+	display: none;
 }
 .navbar{
 	position: relative;
@@ -222,6 +228,7 @@ img {
 
 }
 
+
 .navitemsInactive:hover{
 	background-color: rgb(0, 94, 181);
 	color: white;
@@ -247,7 +254,9 @@ img {
 	font-family: arial;
 	text-transform: uppercase;
 	opacity: 0.6;
+	cursor: pointer;
 }
+
 
 @media screen and (max-width: 690px) {
 	.video-content{
@@ -257,7 +266,7 @@ img {
 
 	.video{
 		float: inherit;
-		width: 100%;
+		width: 98%;
 		height: 30%;
 		background-color: white;
 		border-style: solid;
@@ -311,10 +320,11 @@ img {
 		vertical-align: middle;
 	}
 	.overlay{
-		background-color: rgba(0,0,0,0.7);
+		/*background-color: rgba(0,0,0,0.7);
 		position: absolute;
 		z-index: 1000;
-		height: 100%;
+		height: 100%;*/
+		display: none;
 	}
 	.truncate {
 		width: 50%;
@@ -324,5 +334,33 @@ img {
 	}
 
 	.tags{
-		height: 0.75em;
+		display: inline-block;
+		height: 40%;
+		line-height: 0.2em;
+		margin: 5px;
+
+	}
+	#nextbtn{
+		/*visibility: hidden;*/
+		display: none;
+	}
+	#pgbtn{
+		/*visibility: hidden;*/
+		display: none;
+	}
+	#prevbtn{
+		/*visibility: hidden;*/
+		display: none;
+	}
+	#loadMoreBtn{
+		background-color: #07D;
+		/*visibility: visible;*/
+		display: initial;
+		color: #FFF;
+		width: 25%;
+		font-weight: bolder;
+		padding: 10px;
+		font-family: arial;
+		margin: auto;
+		cursor: pointer;
 	}
