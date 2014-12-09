@@ -32,9 +32,9 @@ App.prototype.loadJSON = function(url,callback){ //load json file
 			catch(e){}
 		}
 	}
-	
+
 	xhr.onreadystatechange = ensureReadiness;
-	
+
 	function ensureReadiness() {
 		if(xhr.readyState < 4) {
 			return;
@@ -56,7 +56,7 @@ App.prototype.loadJSON = function(url,callback){ //load json file
     }
 
 App.prototype.renderArticles=function (p){ //render pageSize of articles on page p
-	
+
 	function convertTime(JSONtimestamp){
 		var d = new Date(parseInt(JSONtimestamp,10));
 		var m = d.getMonth();
@@ -128,7 +128,7 @@ App.prototype.renderArticles=function (p){ //render pageSize of articles on page
 			var timestampData=document.createTextNode(convertTime(JSONf[i].timestamp));
 			timestamp.appendChild(timestampData);
 			textBlock.appendChild(timestamp);
-			
+
 			var content = document.getElementById(idR);
 			content.appendChild(article);
 
@@ -138,10 +138,9 @@ App.prototype.renderArticles=function (p){ //render pageSize of articles on page
 
 	this.loadJSON(this.url,function (xhr){
 		var JSONfile=JSON.parse(xhr.responseText);
-		this.maxNoOfItems=JSONfile.length;
 		render(JSONfile,this.elementId,this.pageSize,p);
-		Pagination.instances[0].renderButtons();
 		Pagination.instances[0].maxNoOfItems=JSONfile.length;
+		Pagination.instances[0].renderButtons();
 	}.bind(this));
 
 }

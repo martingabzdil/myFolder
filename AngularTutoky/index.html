@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='UTF-8'>
+	<title>Json Test</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap.css">
+</head>
+<body ng-app="myApplication">
+	<!-- <div class="container" ng-controller="PostsCtrl as PC">
+		<ul ng-repeat="post in PC.file">
+      		<li>{{post.title}}  - {{post.timestamp}}</li>
+    	</ul>
+	</div> -->
+	<div class="container" ng-controller="displayArticles">
+    	<h2>{{data[0].title}} {{data[0].timestamp}}</h2>
+   	</div>
+
+   	<div class="container" ng-controller="renderButtons">
+    	<h2>{{data[1].title}} {{data[1].timestamp}}</h2>
+   	</div>
+
+<script type="text/javascript" src="angular.js"></script>
+<script type="text/javascript" src="jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="app.js"></script>
+</body>
+</html>
