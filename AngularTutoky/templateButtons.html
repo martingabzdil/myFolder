@@ -1,0 +1,24 @@
+<div id="prevbtn" ng-click="prevPage()">
+
+    ◄ PREVIOUS
+
+</div>
+<div id="pgbtn">
+
+    <div class="navitemsInactive" data-id="{{btn}}" ng-repeat="btn in noOfPages" ng-click="goToPage(btn)">
+
+        {{btn+1}}
+
+    </div>
+
+</div>
+<div id="nextbtn" ng-click="nextPage()">
+
+    NEXT ►
+
+</div>
+<div id="loadMoreBtn">
+
+    LOAD MORE
+
+</div>

@@ -4,7 +4,7 @@ img {
 	margin-left: 2%;
 }
 
-header{
+.header{
 	background: #0073d9; /* Old browsers */
 	background: -moz-linear-gradient(top, #0073d9 0%, #004285 91%, #003572 94%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0073d9), color-stop(91%,#004285), color-stop(94%,#003572)); /* Chrome,Safari4+ */

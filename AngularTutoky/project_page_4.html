@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="stylesheetdesktop.css">
+	<title>Videos</title>
+	
+</head>
+<body ng-app="myApplication">
+	<header class="header">
+		<span class="header-text">Latest Videos</span>
+	</header>
+	
+	<div class="video-content" id="main-content" ng-controller="displayArticles">
+		    <div ng-repeat="video in data | limitTo:15" style="display: inline-block;">
+		       <video-element></video-element>
+		    </div>
+	</div>
+
+	<nav class="navbar" ng-controller="Pagination">
+		  	<button-element></button-element>
+	</nav>
+	
+	<script type="text/javascript" src="angular.js"></script>
+	<script type="application/javascript" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<article class="video">
+
+    <div class="overlay">
+        <div class="tags" ng-repeat="tag in video.categories track by $index"> 
+            <p>
+                {{tag}}
+            </p>
+        </div>
+    
+    </div>
+   
+    <div class="video-still-package">
+        <img class="still" alt="" ng-src="_img/{{video.image || 0}}.jpg"></img>
+        <div class="play-button"></div>
+    </div>
+    <section class="textblock">
+        <h2 class="videoTitle truncate">
+
+            {{video.title}}
+
+        </h2>
+        <time id="timestamp" class="date">
+
+           {{ConvertTime(video.timestamp)}}
+
+        </time>
+    </section>
+
+</article>
