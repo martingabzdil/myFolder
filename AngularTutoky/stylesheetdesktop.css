@@ -209,7 +209,9 @@ img {
 	background-color: rgb(0, 94, 181);
 	color: white;
 }
-
+.threeLittleDots{
+	display: inline-block;
+}
 .navitemsInactive{
 	width: 2em;
 	height: 2.5em;

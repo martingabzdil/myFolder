@@ -34,7 +34,12 @@
       $scope.data=data;
       $scope.$watch('CurrentPage', function(){
 
-        var endVal=($scope.CurrentPage+1)*$scope.itemsPerPage;
+        var endVal =parseInt(0,10);
+
+        if($scope.data.length%$scope.itemsPerPage!==0 && $scope.CurrentPage===Math.floor($scope.data.length/$scope.itemsPerPage)){
+          endVal=$scope.data.length;
+        }else endVal=($scope.CurrentPage+1)*$scope.itemsPerPage;
+        
         var beginVal;
         if($scope.wHeight<690){
           beginVal=0;
@@ -69,38 +74,52 @@
 
   app.controller('Pagination',['$window','$scope','LoadJson',function($window,$scope, LoadJson, CurrentPage){
     var previousPage=0;
-   
-    $scope.displayButtons=function(btn){
-        if(btn<2) return true;
-        if(btn===7) return true;
-        if(btn===2 && $scope.CurrentPage===1) return true;
-      //figure this one out
-
-    }
-
+    
     $scope.renderBtns = function(btn){
-        if(btn===0){
-          return btn+1;
-        }
+      
+      
+      var oddVsEvenDecider = 0;
+      if ($scope.data.length%$scope.itemsPerPage===0){
+        oddVsEvenDecider = 1;
+      } else {
+        oddVsEvenDecider=0;
+      }
 
-        if(btn===Math.floor($scope.data.length/$scope.itemsPerPage)){
-          return btn+1;
-        }
 
-        if(btn<=$scope.CurrentPage+1 && btn>=$scope.CurrentPage-1){
+      if(btn===0){
+        return btn+1;
+      }
+
+      if(btn===Math.floor($scope.data.length/$scope.itemsPerPage)-oddVsEvenDecider){
           return btn+1;
-        } else 
-            if(btn===1 || btn===6){
-              return '...'
-            } else return null;
+      }
+
+      if(btn<=$scope.CurrentPage+1 && btn>=$scope.CurrentPage-1){
+          return btn+1;
+      } else 
+        if(btn===1 || btn===(Math.floor($scope.data.length/$scope.itemsPerPage)-oddVsEvenDecider-1)){
+          return '...'
+          } else return null;
         
 
       }
 
     $scope.setBtnClass = function(btn){
+      console.log($scope.data.length);
+      var oddVsEvenDecider = 0;
+      if ($scope.data.length%$scope.itemsPerPage===0){
+        oddVsEvenDecider = 1;
+      } else {
+        oddVsEvenDecider=0;
+      }
+
       if (btn===$scope.CurrentPage){
         return 'navitemsActive';
-      } else return 'navitemsInactive' //return null when we have ...
+      } else if(btn===$scope.CurrentPage-1 || btn===$scope.CurrentPage+1){
+          return 'navitemsInactive'
+        } else if (btn===0 || btn===Math.floor($scope.data.length/$scope.itemsPerPage)-oddVsEvenDecider){
+          return 'navitemsInactive'
+          } else return 'threeLittleDots'
        
     }
 
@@ -108,6 +127,7 @@
       $scope.data=data;
       $scope.noOfPages = [];
 
+      
       $scope.$watch('CurrentPage', function(){
 
         if($scope.CurrentPage===0){
@@ -116,19 +136,20 @@
           for(var i=0;i<$scope.data.length/$scope.itemsPerPage;i++){
             $scope.noOfPages.push(i);
           }
-        } else { //number of squares
-          console.log('condition2');
-          $scope.noOfPages=[];
-          for(var i=0;i<$scope.data.length/$scope.itemsPerPage;i++){
-            $scope.noOfPages.push(i);
-          }
-
         }
 
       })
 
     $scope.nextPage = function(){
-      if($scope.$parent.CurrentPage!==($scope.data.length/$scope.itemsPerPage)-1){
+      var oddVsEvenDecider = 0;
+      if ($scope.data.length%$scope.itemsPerPage===0){
+        oddVsEvenDecider = 1;
+      } else {
+        oddVsEvenDecider=0;
+      }
+
+      if($scope.$parent.CurrentPage!==Math.floor($scope.data.length/$scope.itemsPerPage)-oddVsEvenDecider)
+      {
         $scope.$parent.CurrentPage+=1;        
       }
     }

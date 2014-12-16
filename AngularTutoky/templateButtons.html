@@ -5,7 +5,7 @@
 </div>
 <div id="pgbtn">
 
-    <div ng-show="displayButtons(btn)" ng-class="setBtnClass(btn)" id="{{btn}}" ng-repeat="btn in noOfPages track by $index" ng-click="goToPage(btn)">
+    <div ng-class="setBtnClass(btn)" id="{{btn}}" ng-repeat="btn in noOfPages track by $index" ng-click="goToPage(btn)">
 
         {{renderBtns(btn)}}
        <!--  {{btn+1}} -->
