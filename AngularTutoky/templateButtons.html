@@ -5,9 +5,10 @@
 </div>
 <div id="pgbtn">
 
-    <div class="navitemsInactive" data-id="{{btn}}" ng-repeat="btn in noOfPages" ng-click="goToPage(btn)">
+    <div ng-show="displayButtons(btn)" ng-class="setBtnClass(btn)" id="{{btn}}" ng-repeat="btn in noOfPages track by $index" ng-click="goToPage(btn)">
 
-        {{btn+1}}
+        {{renderBtns(btn)}}
+       <!--  {{btn+1}} -->
 
     </div>
 
@@ -17,8 +18,9 @@
     NEXT ►
 
 </div>
-<div id="loadMoreBtn">
+<div id="loadMoreBtn" ng-click="loadMore()">
 
     LOAD MORE
+
 
 </div>
