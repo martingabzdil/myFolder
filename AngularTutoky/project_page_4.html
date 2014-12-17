@@ -6,25 +6,33 @@
 	<title>Videos</title>
 	
 </head>
-<body ng-app="myApplication">
-	<header class="header">
-		<span class="header-text">Latest Videos</span>
-	</header>
-	<div ng-controller="commonController">
+<body ng-app="myApplication" ng-controller="commonController">
+	
+	<div ng-controller="displayArticles">
+		
+		<header class="header">
+			<span class="header-text">Latest Videos</span>
+			
+			<select ng-options="tag.value as tag.text for tag in categories" 
+			ng-model="selected" ng-selected='filterByCategory(selected)' 
+			style="float: right; margin-right: 10px;"></select>
+		
+		</header>
+		<div>
+			
+			<div class="video-content" id="main-content" >
+				<div ng-repeat="video in subData track by $index" style="display: inline-block;">
 
-	<div class="video-content" id="main-content" ng-controller="displayArticles">
-		    <div ng-repeat="video in subData track by $index" style="display: inline-block;">
-		      
-		       <video-element></video-element>
+					<video-element></video-element>
 
-		    </div>
-	</div>
+				</div>
+			</div>
+		</div>
+		<nav class="navbar" ng-controller="Pagination">
 
-	<nav class="navbar" ng-controller="Pagination">
+			<button-element></button-element>
 
-		  	<button-element></button-element>
-		  
-	</nav>
+		</nav>
 	</div>
 	
 	<script type="text/javascript" src="angular.js"></script>

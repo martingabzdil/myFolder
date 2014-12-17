@@ -5,6 +5,7 @@
   var app=angular.module('myApplication',[]);
 
   app.factory('LoadJson', ['$http',function($http){
+    
     return $http.get('http://academy.tutoky.com/api/json.php')
   }])
 
@@ -25,7 +26,24 @@
   app.controller('commonController', ['$window','$scope',function($window,$scope){
     $scope.CurrentPage=0;
     $scope.itemsPerPage=10;
+    $scope.selected=0;
+
     $scope.wHeight=$window.innerWidth;
+    //select
+    $scope.categories = [{ "value": 1, "text": "Football" }, 
+                    { "value": 2, "text": "Handball" },
+                    { "value": 3, "text": "News" },
+                    { "value": 4, "text": "Hockey" },
+                    { "value": 5, "text": "Basketball" },
+                    { "value": 6, "text": "Volleyball" },
+                    { "value": 7, "text": "Galleries" },
+                    ];
+    
+    $scope.filterByCategory = function(selectedParam){
+      // console.log(selectedParam);
+      $scope.selected=selectedParam;
+      console.log($scope.selected);
+    }
   }])
 
   app.controller('displayArticles',['$scope','LoadJson',function($scope, LoadJson, CurrentPage){
@@ -34,6 +52,8 @@
       $scope.data=data;
       $scope.$watch('CurrentPage', function(){
 
+        $scope.subData=[];
+        
         var endVal =parseInt(0,10);
 
         if($scope.data.length%$scope.itemsPerPage!==0 && $scope.CurrentPage===Math.floor($scope.data.length/$scope.itemsPerPage)){
@@ -46,8 +66,7 @@
         } else {
           beginVal=$scope.CurrentPage*$scope.itemsPerPage;
         }
-
-        $scope.subData=[];
+        
         for(var j = beginVal; j <endVal; j++){
           $scope.subData.push($scope.data[j]);
         }
@@ -95,9 +114,11 @@
       }
 
       if(btn<=$scope.CurrentPage+1 && btn>=$scope.CurrentPage-1){
+          
           return btn+1;
       } else 
         if(btn===1 || btn===(Math.floor($scope.data.length/$scope.itemsPerPage)-oddVsEvenDecider-1)){
+          
           return '...'
           } else return null;
         
@@ -105,7 +126,7 @@
       }
 
     $scope.setBtnClass = function(btn){
-      console.log($scope.data.length);
+      
       var oddVsEvenDecider = 0;
       if ($scope.data.length%$scope.itemsPerPage===0){
         oddVsEvenDecider = 1;
@@ -119,7 +140,9 @@
           return 'navitemsInactive'
         } else if (btn===0 || btn===Math.floor($scope.data.length/$scope.itemsPerPage)-oddVsEvenDecider){
           return 'navitemsInactive'
-          } else return 'threeLittleDots'
+          } else {
+  
+            return 'threeLittleDots'}
        
     }
 
@@ -131,7 +154,7 @@
       $scope.$watch('CurrentPage', function(){
 
         if($scope.CurrentPage===0){
-          console.log('condition1');
+
           $scope.noOfPages=[];
           for(var i=0;i<$scope.data.length/$scope.itemsPerPage;i++){
             $scope.noOfPages.push(i);

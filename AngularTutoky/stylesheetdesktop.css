@@ -54,6 +54,7 @@ img {
 	margin-top: 10px;
 	margin-left: 7px;
 	position: relative;
+	
 }
 .video:hover .overlay{
 	visibility: visible;
@@ -211,6 +212,7 @@ img {
 }
 .threeLittleDots{
 	display: inline-block;
+	color:rgb(0, 94, 181);
 }
 .navitemsInactive{
 	width: 2em;
