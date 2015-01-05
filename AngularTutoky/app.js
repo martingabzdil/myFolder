@@ -30,9 +30,13 @@
       $scope.CurrentPage = 0;
       $scope.itemsPerPage = 10;
       $scope.selected =0;
+      // if(localStorage['Favorites'] !== undefined){
+        // $scope.selected = 8;
+      // }
+
 
       $scope.wHeight = $window.innerWidth;
-
+      //init categories
       $scope.categories = [{
             "value": 0,
             "text": "All"
@@ -47,37 +51,50 @@ app.controller('displayArticles', ['$scope', 'LoadJson',
       $scope.data = data;
       $scope.dataToBeDisplayed = [];
       $scope.subData = $scope.data;
-
-      $scope.categories.push(
-         {
-            "value": 1,
-            "text": "Football"
-        })
+      
+      //get all categories from JSON feed into an array
       
       var categoriesinJson=[];
-      //get all categories from JSON feed into an array
-     
-      // for (var p in data){
-      //   console.log('objekt c '+p)
-      //   if (data[p].categories.length > 3){
-      //     // console.log(data[p].categories);
-      //     for (var j in data[p].categories){
-      //       if (categoriesinJson.length < 1){
-      //         categoriesinJson.push(data[p].categories[j]);
-      //       } else {
-      //         for (var k in categoriesinJson){
-      //           console.log(k);
-               
-      //         }
-      //       }
-      //       // console.log(j);
-      //     }
-      //   }
-      // }
+      var noOfCat=0;
 
-      console.log(categoriesinJson);
+      for (var b in $scope.data){
+        for (var c in $scope.data[b].categories){
+          if (categoriesinJson.indexOf($scope.data[b].categories[c]) > -1) {
+            //if the dategory exists in the array already do nothing
+            } else {
+            noOfCat++;
+            categoriesinJson.push($scope.data[b].categories[c]);
+            }
+          
+        }
+      }
+
+      for (var d in categoriesinJson){
+        var newCatObj = {
+          "value":parseInt(d)+1,
+          "text":categoriesinJson[d]
+        }
+        $scope.categories.push(newCatObj);
+      }
+
+      if(localStorage['Favorites'] !== undefined){
+           var ls = JSON.parse(localStorage['Favorites']);
+           for (var i in ls){
+              for (var j in $scope.subData){
+                if(ls[i] === $scope.subData[j].title){
+                  $scope.subData[j].categories.push('Favorites');                
+                }
+              }
+           }
+           $scope.categories.push({
+                    "value": 8,
+                    "text": "Favorites"
+                  });
+           $scope.selected = $scope.categories.length-1;
+        }
 
 
+      //event listener for page change
       $scope.$watch('CurrentPage', function() {
         
         $scope.dataToBeDisplayed = [];
@@ -104,8 +121,9 @@ app.controller('displayArticles', ['$scope', 'LoadJson',
         
       });
 
+      //event listener for category filter
       $scope.$watch('selected', function() {
-        
+
         $scope.dataToBeDisplayed = [];
 
         $scope.subData = [];
@@ -114,18 +132,13 @@ app.controller('displayArticles', ['$scope', 'LoadJson',
           
           $scope.subData=$scope.data;
           
-        }
-
-        if($scope.selected === 1){
+        } else {
             
           for(var k in $scope.data){
-              
-            if($scope.data[k].image==='1'){
-
-              
+           
+            if ( $scope.data[k].categories.indexOf($scope.categories[$scope.selected].text) > -1) {
               $scope.subData.push($scope.data[k]);
-              
-            }
+              }
               
           }
      
@@ -151,7 +164,51 @@ app.controller('displayArticles', ['$scope', 'LoadJson',
       $scope.filterByCategory = function(selectedParam) {
         $scope.selected = selectedParam;  
       };
+      
+      $scope.setFavIcon = function(){
+         if (this.video.categories.indexOf('Favorites') > -1){
+            return'favActive.png';
+          } 
+          else{
+            return 'favInactive.png';
+          }
+      }
 
+      $scope.addToFavorites = function(){
+          if(localStorage['Favorites'] === undefined){
+            localStorage['Favorites'] = '[]';
+          }
+  
+          if ($scope.categories[$scope.categories.length-1].text !== 'Favorites'){
+            var newCatObj = {
+              "value":parseInt($scope.categories.length),
+              "text":'Favorites'
+              } 
+            $scope.categories.push(newCatObj);
+          }
+
+          if (this.video.categories.indexOf('Favorites') > -1){
+            //remove from favorites
+            this.video.categories.splice(this.video.categories.indexOf('Favorites'),1);
+            var ls = JSON.parse(localStorage['Favorites']);
+            console.log(ls);
+            console.log(this.video.title);
+            ls.splice(ls.indexOf(this.video.title),1);
+            localStorage['Favorites'] = JSON.stringify(ls);
+            console.log('Removed from Favorites');
+          } 
+          else{
+            //add to favorites
+            this.video.categories.push('Favorites');
+            var ls = JSON.parse(localStorage['Favorites']);
+            console.log(ls);
+            ls.push(this.video.title);
+            localStorage['Favorites'] = JSON.stringify(ls);
+            console.log('Added to Favorites');
+          }
+      }
+
+      //timestamp convert time function 
       $scope.ConvertTime = function(JSONtimestamp) {
         var d = new Date(parseInt(JSONtimestamp, 10));
         var m = d.getMonth();

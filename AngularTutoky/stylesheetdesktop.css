@@ -70,6 +70,15 @@ img {
 	top:13em;
 }
 
+.fav{
+	width: 15%;
+	height: 15%;
+	position: absolute;
+	bottom: 5%;
+	right: 5%;
+	cursor: pointer;
+}
+
 .date{
 	font-family: arial;
 	color: gray;
