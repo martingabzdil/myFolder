@@ -265,7 +265,7 @@ img {
 	border-radius: 2em 2em 2em 2em;
 	margin:auto;
 	font-family: arial;
-	text-transform: uppercase;
+	text-transform: lowercase;
 	opacity: 0.6;
 	cursor: pointer;
 }

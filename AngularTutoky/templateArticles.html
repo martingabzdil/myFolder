@@ -3,7 +3,7 @@
     <div class="overlay">
         <div class="tags" ng-repeat="tag in video.categories track by $index"> 
             <p>
-                {{tag}}
+                #{{tag}}
             </p>
         </div>
         <img ng-src="{{setFavIcon()}}" class="fav" ng-click="addToFavorites()"/>
