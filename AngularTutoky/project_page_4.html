@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="stylesheetdesktop.css">
+	<link rel="stylesheet" type="text/css" href="_css/stylesheetdesktop.css">
 	<title>Videos</title>
 	
 </head>
@@ -13,9 +13,7 @@
 		<header class="header">
 			<span class="header-text">Latest Videos</span>
 			
-			<select ng-options="tag.value as tag.text for tag in categories" 
-			ng-model="selected" ng-selected='filterByCategory(selected)' 
-			style="float: right; margin-right: 10px;"></select>
+			<select ng-options="tag.value as tag.text for tag in categories" ng-model="selected" ng-selected='filterByCategory(selected)' style="float: right; margin-right: 10px;"></select>
 		
 		</header>
 		<div>
@@ -33,9 +31,16 @@
 			<button-element></button-element>
 
 		</nav>
+
 	</div>
+
 	
-	<script type="text/javascript" src="angular.js"></script>
-	<script type="application/javascript" src="app.js"></script>
+	<script type="text/javascript" src="_app/angular.js"></script>
+	<script type="application/javascript" src="_app/app.js"></script>
+	<script type="application/javascript" src="_app/loader.js"></script>
+	<script type="application/javascript" src="_app/commonController.js"></script>
+	<script type="application/javascript" src="_app/directives.js"></script>
+	<script type="application/javascript" src="_app/pagination.js"></script>
+	<script type="application/javascript" src="_app/displayArticles.js"></script>
 </body>
 </html>

@@ -1,10 +1,10 @@
 <html>
-<div id="prevbtn" ng-click="prevPage()">
+<div id="prevbtn" ng-click="prevPage()" class="unselectable">
 
     ◄ PREVIOUS
 
 </div>
-<div id="pgbtn">
+<div id="pgbtn" class="unselectable">
 
     <div ng-class="setBtnClass(btn)" id="{{btn}}" ng-repeat="btn in noOfPages track by $index" ng-click="goToPage(btn)">
 
@@ -13,12 +13,12 @@
     </div>
 
 </div>
-<div id="nextbtn" ng-click="nextPage()">
+<div id="nextbtn" ng-click="nextPage()" class="unselectable">
 
     NEXT ►
 
 </div>
-<div id="loadMoreBtn" ng-click="loadMore()">
+<div id="loadMoreBtn" ng-click="loadMore()" class="unselectable">
 
     LOAD MORE
 

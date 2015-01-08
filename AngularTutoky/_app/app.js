@@ -1,0 +1,1 @@
+var app = angular.module('myApplication', ['loader','directives','commonController','displayArticles','pagination']);

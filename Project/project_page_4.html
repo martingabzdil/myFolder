@@ -6,20 +6,22 @@
 	<title>Videos</title>
 	
 </head>
-<body >
+<body ng-app="app">
 	<div class="header">
 		<span class="header-text">Latest Videos</span>
 	</div>
 	
-	<div class="video-content" id="main-content" >
+	<div class="video-content" id="main-content" ng-controller="app as a">
 
 	</div>
 	<hr> 
-	<nav class="navbar">
+	<nav class="navbar" ng-controller="pagination as p">
 		
 	</nav>
 </body>
-<script type="application/javascript" src="app.js"></script>
-<script type="application/javascript" src="pagination2.js"></script>
-<script type="application/javascript" src="merge.js"></script>
+<script type="text/javascript" src="angular.js"></script>
+<script type="text/javascript" src="jquery-2.1.1.min.js"></script>
+<script type="application/javascript" src="appAG.js"></script>
+<!-- <script type="application/javascript" src="pagination2.js"></script>
+<script type="application/javascript" src="merge.js"></script> -->
 </html>

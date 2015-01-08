@@ -90,7 +90,7 @@ img {
 }
 
 .play-button {
-	background: url('play_button.png') center center no-repeat;
+	background: url('../_img/play_button.png') center center no-repeat;
 	background-size: 20%;
 	background-repeat: no-repeat;
 	height: 80%;
@@ -270,6 +270,14 @@ img {
 	cursor: pointer;
 }
 
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 
 @media screen and (max-width: 690px) {
 	.video-content{
