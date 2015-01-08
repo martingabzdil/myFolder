@@ -1,6 +1,9 @@
-angular.module('pagination',[])
+angular.module('pagination',['loader'])
 
-.controller('Pagination', ['$window', '$scope', function($window, $scope, CurrentPage) {
+.controller('Pagination', ['$window', '$scope', 'LoadJson', function($window, $scope, LoadJson , CurrentPage) {
+            LoadJson.success(function(data) {
+                reloadNoOfPages();
+            });
 
             var previousPage = 0;
 
@@ -95,11 +98,11 @@ angular.module('pagination',[])
             }
             
             $scope.$watch('CurrentPage', function() {
-                     reloadNoOfPages();
+                    reloadNoOfPages();
                 });
 
              $scope.$watch('selected', function() {
-                     reloadNoOfPages();
+                    reloadNoOfPages();
                 })
         }
     ]);

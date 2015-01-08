@@ -1,6 +1,17 @@
-angular.module('displayArticles',[])
+angular.module('displayArticles',['loader'])
 
 .controller('displayArticles', ['$scope', 'LoadJson',function($scope, LoadJson, CurrentPage) {
+             LoadJson.success(function(data) {
+                $scope.data = data;
+                $scope.dataToBeDisplayed = [];
+                $scope.subData = $scope.data;
+                
+                getCategories();
+                loadFavorites();
+                changeContentByCategory();
+                
+            });
+            
             //$scope functions called from DOM
 
             //function to convert timestamp from json
@@ -172,14 +183,7 @@ angular.module('displayArticles',[])
                changeContentByPage();
             });
 
-            LoadJson.success(function(data) {
-                $scope.data = data;
-                $scope.dataToBeDisplayed = [];
-                $scope.subData = $scope.data;
-                
-                getCategories();
-                loadFavorites();
-            });
+           
 
         }
     ]);
