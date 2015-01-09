@@ -1,15 +1,15 @@
-angular.module('directives',[])
+angular.module('directives', [])
 
-.directive('videoElement', function() {
+  .directive('videoElement', function () {
     return {
-        restrict: 'E',
-        templateUrl: './_tmp/templateArticles.html' //dynamic template for article rendering
+      restrict: 'E',
+      templateUrl: './_tmp/templateArticles.html' //dynamic template for article rendering
     };
-})
+  })
 
-.directive('buttonElement', function() {
+  .directive('buttonElement', function () {
     return {
-        restrict: 'E',
-        templateUrl: '_tmp/templateButtons.html' //dynamic template for button rendering
+      restrict: 'E',
+      templateUrl: '_tmp/templateButtons.html' //dynamic template for button rendering
     };
-});
+  });
